@@ -1,0 +1,101 @@
+
+source('R/packages.R')
+## loading file + tokenizations
+
+music_df <- read.csv('data-raw/music.csv') %>%
+  data.frame() %>%
+  select(
+    Artist = artist_name,
+    Genre = genre,
+    Track = track_name,
+    Lyrics = lyrics
+  )  # Change path if necessary!
+
+shuffled_df <- music_df[sample(nrow(music_df)), ]
+
+# Tokenization
+music.tb <- as_tibble(shuffled_df)
+music.tok <- tidytext::unnest_tokens(
+  music.tb,
+  output = "word",
+  input = "Lyrics",
+  to_lower = TRUE,
+  strip_punct = TRUE,
+  strip_numeric = TRUE
+)
+
+
+
+music.sent <- inner_join(
+  x = music.tok,
+  y = textdata::lexicon_nrc(delete = T, manual_download =  T),
+  by = c("word" = "word"), 
+  relationship = 'many-to-many'
+)
+
+
+
+### functions 
+
+getGenreMood <- function (genre){ 
+  
+  if (genre==''){
+    stop('No genre submitted. Please submit one.')
+  }else{ 
+    return (music.sent[music.sent$Genre == genre,] %>% 
+              group_by(Genre, sentiment) %>% 
+              summarize(n = n()) %>%
+              ungroup() %>% 
+              plot_ly(x = ~n, 
+                      y = ~sentiment,
+                      color = ~sentiment,
+                      type = 'bar',
+                      mode = 'markers') %>% 
+              layout(title = genre, margin = list(t = 30)))
+  }
+}
+
+getTraksentiement <- function(track){
+  
+  if (track == ''){
+    stop('No track submitted. Please insert one.')
+  }else{
+    
+  
+    
+    return (music.sent[music.sent$Track == track,] %>% # filter and keep only given track 
+              group_by(Track, sentiment) %>% 
+              summarize(n = n()) %>%
+              ungroup() %>% 
+              plot_ly(x = ~n, 
+                      y = ~sentiment,
+                      color = ~sentiment,
+                      type = 'bar',
+                      mode = 'markers') %>% 
+              layout(title = track, margin = list(t = 60)))
+  }
+}
+
+
+getArtistSentiement <- function(artist){
+  
+  if (artist == ''){
+    stop('No artist submitted. Please submit one.')
+  }else{
+    
+    
+    return (music.sent[music.sent$Artist == artist,] %>% # filter and keep only track given
+              group_by(Artist, sentiment) %>% 
+              summarize(n = n()) %>%
+              ungroup() %>% 
+              plot_ly(x = ~n, 
+                      y = ~sentiment,
+                      color = ~sentiment,
+                      type = 'bar',
+                      mode = 'markers') %>% 
+              layout(title = artist, margin = list(t = 60)))
+    
+  }
+  
+}
+

@@ -1,0 +1,15 @@
+# documenting dataset R file 
+
+#' music.csv dataset 
+#' @format ## music
+#' A dataset with 28k rows and 4 columns:
+#' \describe{
+#'   \item{Artist}{Artist_name}
+#'   \item{Genre}{Music genre}
+#'   \item{Track}{Track_name}
+#'   \item{Lyrics}{lyrics of tracks}
+#' }
+#'
+#'@source <https://www.kaggle.com/datasets/zulqarnainali/music-dataset>
+"Music_df"
+
