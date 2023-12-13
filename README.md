@@ -10,7 +10,7 @@ The goal of Myapp package is to simply let users run Music Alysis app with the c
 
 ## Installation
 
-You can install the development version of myapp from [GitHub](https://github.com/Ed-sctt/Myapp) with:
+You can install the development version of myapp from [GitHub](https://ed-sctt.github.io/myApp/) with:
 
 ``` r
 # install.packages("MyappR")
