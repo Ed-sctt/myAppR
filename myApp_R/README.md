@@ -31,8 +31,4 @@ This is the music anaylsis section. Simply run the command MyappR::main() and ex
 MyappR::main()
 ```
 
-### Author
 
-![](man/figures/moicv%20copie%202.PNG){style="border-radius:60px;" width="120" height="120"}
-
-Edward Tandia
